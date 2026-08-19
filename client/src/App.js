@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { React, useState, useEffect } from 'react'
 import Search from './components/search'
+import Table from './components/table'
 const base_url = process.env.REACT_APP_API_URL
 
 const App = () => {
@@ -14,10 +15,12 @@ const App = () => {
     useEffect(() => {
         const getAllMovies = async () => {
             try {
-                const url = `${base_url}?page=${page}&sort=${sort},${sort.order}&limit=${limit}&genre=${filterGenre.toString()}&search=${search}`
+                const url = `${base_url}?page=${page}&sort=${sort.sort},${sort.order}&limit=${limit}&genre=${filterGenre.join(',')}&search=${search}`
+
                 const { data } = await axios.get(url)
                 setObj(data)
                 console.log(data)
+                console.log(obj.movies)
             } catch (error) {
                 console.log(error)
             }
@@ -33,7 +36,10 @@ const App = () => {
                     <Search setSearch={setSearch} />
                 </div>
                 <div className='body'>
-                    <div className='table_container'></div>
+                    <div className='table_container'>
+                        {' '}
+                        <Table movies={obj.movies} />
+                    </div>
                     <div className='filter_container'></div>
                 </div>
             </div>
