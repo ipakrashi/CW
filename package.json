@@ -1,0 +1,27 @@
+{
+    "name": "cw",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "server": "npm start --prefix server",
+        "client": "npm start --prefix client",
+        "dev": "concurrently -c \"yellow,cyan\" -n \"SERVER,CLIENT\" \"npm run server\" \"npm run client\"",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ipakrashi/CW.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/ipakrashi/CW/issues"
+    },
+    "homepage": "https://github.com/ipakrashi/CW#readme",
+    "dependencies": {
+        "concurrently": "^10.0.5"
+    }
+}
