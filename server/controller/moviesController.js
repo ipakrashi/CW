@@ -2,8 +2,6 @@ import asyncHandler from 'express-async-handler'
 import movieModel from '../models/movieModel.js'
 import movies from '../config/movies.json' with { type: 'json' }
 
-const movieData = '../config/movies.json'
-
 // @desc
 //  route
 //  @access
@@ -12,11 +10,11 @@ const getMovies = asyncHandler(async (req, res) => {
         const page = parseInt(req.query.page) - 1 || 0
         const limit = parseInt(req.query.limit) || 5
         const search = req.query.search || ''
-        let sort = req.query.sort || 'rating'
+        let sort = req.query.sort || 'IMDB_Rating'
         let genre = req.query.genre || 'All'
 
         // Dynamically fetch unique genres from the MongoDB collection
-        const genreOptions = await movieModel.distinct('genre')
+        const genreOptions = await movieModel.distinct('Genre')
 
         // Handle genre filtering logic
         genre = genre === 'All' ? [...genreOptions] : genre.split(',')
@@ -34,17 +32,17 @@ const getMovies = asyncHandler(async (req, res) => {
 
         const movies = await movieModel
             .find({
-                name: { $regex: search, $options: 'i' },
+                Series_Title: { $regex: search, $options: 'i' },
             })
-            .where('genre')
+            .where('Genre')
             .in([...genre])
             .sort(sortBy)
             .skip(page * limit)
             .limit(limit)
 
         const total = await movieModel.countDocuments({
-            genre: { $in: [...genre] },
-            name: { $regex: search, $options: 'i' },
+            Genre: { $in: [...genre] },
+            Series_Title: { $regex: search, $options: 'i' },
         })
 
         const response = {
